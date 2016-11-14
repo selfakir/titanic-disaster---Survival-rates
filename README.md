@@ -73,8 +73,12 @@ The final visualization was index3.html.
 ## Ressources
 
 Online courses : Udacity data visualization course (D3 and dimple.js)
+
 Titanic data set: https://www.kaggle.com/c/titanic-gettingStarted
+
 dimple js examples: http://dimplejs.org/examples_index.html
+
 colors: http://colors.findthedata.com/saved_search/Pastel-Colors
+
 tooltip customization : http://stackoverflow.com/questions/25334677/override-d3-dimple-tooltips-with-chart-data
 
