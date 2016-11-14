@@ -48,9 +48,9 @@ The result was index1.html.
 
 ### Feedback 2 (Youssef)
 
-"The chart is about survival rate. Right ? well the first think I see are the number for people who survived/died."
+"The chart is about survival rates. Right ? well the first thing I see are the numbers for people who survived or died."
 
-I added data labels reprensenting numbers for each bart (number of people who died VS number of people who survived) and changed the color for non-survival rates or death rates. I also updated the tooltip with survival/death rates.
+I added data labels reprensenting percentages instead of numbers for each bar. I also updated the tooltip with numbers instead of  rates.
 With youssef we tried different sizes for class names and also different number of ticks for the y Axis. We decided to increase the class names font size and decrease the number of ticks.
 
 "The title is long and not engaging...A standard one"
