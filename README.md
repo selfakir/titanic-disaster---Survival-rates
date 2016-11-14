@@ -76,6 +76,8 @@ Online courses : Udacity data visualization course (D3 and dimple.js)
 
 Titanic data set: https://www.kaggle.com/c/titanic-gettingStarted
 
+dimple documentation : https://github.com/PMSI-AlignAlytics/dimple/wiki
+
 dimple js examples: http://dimplejs.org/examples_index.html
 
 colors: http://colors.findthedata.com/saved_search/Pastel-Colors
