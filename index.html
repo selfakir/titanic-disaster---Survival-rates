@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+  <style>
+    rect.dimple-series-0 {
+      stroke: none;
+    }
+
+  </style>
+
+  <script type="text/javascript">
+    function draw(data) {
+    
+    /*
+      D3.js setup code
+    */
+
+      "use strict";
+      var margin = 100,
+          width = 1400 - margin,
+          height = 600 - margin;
+
+      
+
+      var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width + margin)
+        .attr("height", height + margin)
+        .append('g')
+        .attr('class','chart');
+    
+
+  /*
+    Dimple.js Chart construction code
+  */
+
+  // Adding title
+
+      svg.append("text")
+      .attr("x", (width / 2))             
+      .attr("y",  40)
+      .attr("text-anchor", "middle")  
+      .style("font-size", "30px") 
+      .style("fill", "#696969") 
+      .text("Titanic survival rates per class and gender");
+
+
+  // constructing chart
+
+      var myChart = new dimple.chart(svg, data);
+      var x = myChart.addCategoryAxis("x", ["Pclass","Sex"]);
+      x.addOrderRule("Pclass",true); 
+      x.title = "Passenger Class"
+      var y = myChart.addPctAxis("y","PassengerId");
+      y.hidden = false;
+      y.showGridlines = false;
+      y.ticks = 4
+      var s = myChart.addSeries(["Survived"], dimple.plot.bar);
+      s.addOrderRule("Survived",true);
+      s.aggregate = dimple.aggregateMethod.count;
+
+
+  // tooltip customization
+     
+      s.getTooltipText = function (e) {
+
+
+        if (e.aggField[0]==0){
+          return [
+            "in the "+e.xField[0]+" class, "+d3.format("")(e.yValue)+" "+e.xField[1]+'s died',
+          //console.log(e)
+          ];
+        }
+  
+        if (e.aggField[0]==1){
+          return [
+            "in the "+e.xField[0]+" class, "+d3.format("")(e.yValue)+" "+e.xField[1]+'s Survived',
+          ];
+        }
+      };
+
+    
+  // Afterdraw styling  
+
+
+      s.afterDraw = function (shape, data) {
+
+        // assigning shape attributes
+
+        var s=d3.select(shape);
+        var id=s.attr("id");
+        var rect = {
+          x: parseFloat(s.attr("x")),
+          y: parseFloat(s.attr("y")),
+          width: parseFloat(s.attr("width")),
+          height: parseFloat(s.attr("height"))
+          };
+        
+
+        //change fill colors for non-surviving shapes 
+
+        if (id.search("0_")>=0) {
+          s.attr('fill',"#cfcfc4")     
+        }
+
+        // Define series shape color depending on Sex and adding gender labels
+
+        // Females
+
+        if (id.search("/female")>=0 && id.search("0_")<0 ) {
+          s.attr("fill","#FFD1DC")
+          svg.append("text")
+          .attr("x", rect.x + rect.width / 2)
+          .attr("y", rect.y + rect.height - 10)
+          .style("text-anchor", "middle")
+          .style("font-size", "15px")
+          .style("fill", "#FF69B4")
+          .style("font-family", "sans-serif")
+          .style("opacity", 1)
+          .text("Females");
+
+
+        }
+
+        // Males
+
+        if (id.search("/male")>=0 && id.search("0_")<0    ) {
+          s.attr("fill","#AEC6CF")
+          svg.append("text")
+          .attr("x", rect.x + rect.width / 2)
+          .attr("y", rect.y + rect.height - 10)
+          .style("text-anchor", "middle")
+          .style("font-size", "15px")
+          .style("fill", "#00688B")
+          .style("font-family", "sans-serif")
+          .style("opacity", 1)
+          .text("Males");
+        }
+
+
+        // Axis customization
+
+        // xAxis
+        x.shapes.selectAll("path").style("stroke","white");
+        x.shapes.selectAll("line").style("stroke","white");
+        x.shapes.selectAll("text").style("font-size","15px");
+        x.shapes.selectAll("text").style("fill","#696969");
+        x.titleShape.remove();
+        x.shapes.selectAll("text").text 
+          (
+            function(d) 
+              { 
+                return "Class " +d; 
+              }
+          ) 
+
+        // yAxis
+        y.shapes.selectAll("path").style("stroke","white")
+        y.shapes.selectAll("text").style("font-size","10px")
+        y.shapes.selectAll("line").style("stroke","white")
+        y.shapes.selectAll("text").style("fill","#696969")
+        y.titleShape.remove();
+         
+      };
+    
+      myChart.draw();         
+    };
+  </script>
+</head>
+
+<body>
+  <script type="text/javascript">
+  // loading fill and calling the draw function
+  d3.csv("titanic_data.csv", draw);
+  </script>
+</body>
+</html>
